@@ -1,6 +1,10 @@
 # Third party libraries
 
 # buildables
+Build
+_build/
+blib/
+MYMETA.*
 
 # bad.
 .DS_Store
