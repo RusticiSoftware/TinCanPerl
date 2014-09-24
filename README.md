@@ -1,8 +1,14 @@
 A Perl library for implementing Tin Can API.
 
+For hosted API documentation, basic usage instructions, supported version listing, etc. visit the main project website at:
+
+http://rusticisoftware.github.io/TinCanPerl/
+
+For more information about the Tin Can API visit:
+
 http://tincanapi.com/
 
-INSTALLATION
+### Installation
 
 To install this module, run the following commands:
 
@@ -11,7 +17,7 @@ To install this module, run the following commands:
 	./Build test
 	./Build install
 
-SUPPORT AND DOCUMENTATION
+### Support and Documentation
 
 After installing, you can find documentation for this module with the
 perldoc command.
@@ -33,7 +39,7 @@ You can also look for information at:
         http://search.cpan.org/dist/tincan/
 
 
-LICENSE AND COPYRIGHT
+### License and Copyright
 
 Copyright (C) 2014 Rustici Software
 

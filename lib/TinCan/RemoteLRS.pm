@@ -1,11 +1,13 @@
-package TinCan::LRS;
-
-use TinCan;
+package TinCan::RemoteLRS;
 
 use Carp;
 use LWP::UserAgent;
 use Moo;
 use namespace::clean;
+
+use TinCan;
+use TinCan::LRSResponse;
+use TinCan::About;
 
 our $VERSION = '0.01';
 
@@ -33,24 +35,41 @@ has extended => (
     is => 'rw',
 );
 
-my $_ua = LWP::UserAgent->new;
+my $_ua = LWP::UserAgent->new(
+    ssl_opts => { verify_hostname => 0 }
+);
 
-sub sendRequest {
+sub _sendRequest {
     my $self = shift;
+    my ($method, $resource, $options) = @_;
+
+    my $url = $self->endpoint . $resource;
+
+    my $response = TinCan::LRSResponse->new;
+
     my $req = HTTP::Request->new(
-        GET => 'http://cloud.scorm.com/tc/3HYPTQLAI9/sandbox/about'
+        $method => $url,
     );
+    $response->httpRequest($req);
+
     my $res = $_ua->request($req);
+    $response->httpResponse($res);
 
-    if ($res->is_success) {
-        carp "Successful response!";
-        carp $res->content;
-    }
-    else {
-        carp "Request failed: " . $res->status_line . "\n";
+    $response->content($res->content);
+    $response->success($res->is_success);
+
+    return $response;
+}
+
+sub about {
+    my $self = shift;
+
+    my $response = $self->_sendRequest('GET', 'about');
+    if ($response->success) {
+        $response->content(TinCan::About->fromJSON($response->content));
     }
 
-    return 1;
+    return $response;
 }
 
 1;
@@ -59,13 +78,13 @@ __END__
 
 =head1 NAME
 
-TinCan::LRS - Learning record store abstraction class
+TinCan::RemoteLRS - Learning record store abstraction class
 
 =head1 SYNOPSIS
 
-    use TinCan::LRS;
+    use TinCan::RemoteLRS;
 
-    my $lrs = TinCan::LRS->new(
+    my $lrs = TinCan::RemoteLRS->new(
         endpoint => 'https://.....',
         username => 'tcapi_user',
         password => '****'

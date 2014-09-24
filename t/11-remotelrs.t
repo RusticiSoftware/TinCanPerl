@@ -7,7 +7,7 @@ use Test::Exception;
 
 my ($class, $lrs, $endpoint);
 BEGIN {
-    $class = 'TinCan::LRS';
+    $class = 'TinCan::RemoteLRS';
     use_ok($class);
 }
 
@@ -23,13 +23,17 @@ throws_ok(
     'invalid version'
 );
 
+# TODO: make this configurable
+$endpoint = 'https://www.example.com/tc/';
+
 $lrs = $class->new(
     endpoint => $endpoint
 );
 is($lrs->endpoint, $endpoint, 'endpoint() get');
 
-my $value = $lrs->sendRequest;
-is($value, 1, 'sendRequest');
+my $value = $lrs->about;
+#is($value, 1, 'sendRequest');
+#diag explain $value;
 
 done_testing();
 

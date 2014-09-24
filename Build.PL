@@ -17,8 +17,14 @@ my $builder = Module::Build->new(
         'Test::Exception' => 0,
     },
     requires => {
-        'Moo' => 1.004002,
-        'LWP' => 6.04,
+        'Moo'  => 1.004002,
+        'LWP'  => 6.04,
+        'JSON' => 2.90,
+        #'UUID::Tiny' => ,
+    },
+    recommends => {
+        #'JSON::XS' => '>2.34, <3',
+        'JSON::XS' => 0,
     },
     add_to_cleanup     => [ 'tincan-*' ],
     create_makefile_pl => 'traditional',
